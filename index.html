@@ -29,7 +29,8 @@
 /* --- CSS --- */
 /* ====================================== */
 
-/*sistem scroll smooth closed button*/
+/* === NUCLEAR CORE - SMOOTH SCROLL === */
+/*=== sistem scroll smooth ===*/
 html {
   scroll-behavior: smooth;
 }
@@ -1036,6 +1037,18 @@ document.getElementById('copyBtn-video').addEventListener('click', () => {
 
 // Current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
+
+/* === NUCLEAR WARHEAD - AUTO TARGETING === */
+/* === Auto adjust saiz navbar ===*/
+window.onload = function() {
+  let navbar = document.querySelector('nav');
+  if(navbar) {
+    let navbarHeight = navbar.offsetHeight;
+    document.documentElement.style.scrollPaddingTop = navbarHeight + 20 + 'px';
+    console.log('🎯 NUCLEAR STRIKE: Scroll padding set to ' + (navbarHeight + 20) + 'px');
+  }
+};
+
 </script>
 </body>
 </html>
