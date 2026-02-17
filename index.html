@@ -922,24 +922,64 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-document.querySelectorAll('#slide-menu a').forEach(link => {
-  link.addEventListener('click', (e) => {
-    if (link.getAttribute('href').startsWith('#')) {
-      e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-      
-      if (targetElement) {
-        closeMenu();
-        setTimeout(() => {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }, 300);
-      }
-    } else {
-      closeMenu();
-    }
+
+// ========================================
+// NUCLEAR AUTO OFFSET - SATU UNTUK SEMUA MENU
+// ========================================
+
+// Fungsi untuk scroll dengan auto offset
+function smoothScrollToElement(elementId) {
+  const target = document.getElementById(elementId);
+  if (!target) return false;
+  
+  // Dapatkan tinggi navbar
+  const navbar = document.querySelector('nav');
+  const navbarHeight = navbar ? navbar.offsetHeight : 70;
+  
+  // Kira posisi target dengan offset
+  const targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 20;
+  
+  // Scroll smooth
+  window.scrollTo({
+    top: targetPosition,
+    behavior: 'smooth'
   });
+  
+  console.log(`🎯 Scroll ke ${elementId} (offset: ${navbarHeight + 20}px)`);
+  return true;
+}
+
+// Handle semua hash
+function handleAllHashes() {
+  const hash = window.location.hash;
+  if (!hash) return;
+  
+  const id = hash.substring(1);
+  smoothScrollToElement(id);
+}
+
+// Trigger on load & hash change
+window.addEventListener('load', handleAllHashes);
+window.addEventListener('hashchange', handleAllHashes);
+
+// Override semua internal link
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a[href^="#"]');
+  if (link) {
+    e.preventDefault();
+    const id = link.getAttribute('href').substring(1);
+    
+    // Close menu dulu kalau ada
+    if (typeof closeMenu === 'function') closeMenu();
+    
+    // Update hash
+    window.location.hash = id;
+    
+    // Scroll manually (lagi reliable)
+    smoothScrollToElement(id);
+  }
 });
+
 
 // Share button
 const shareBtn = document.getElementById('shareBtn');
@@ -1038,17 +1078,6 @@ document.getElementById('copyBtn-video').addEventListener('click', () => {
 // Current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-/* === NUCLEAR WARHEAD - AUTO TARGETING === */
-/* === Auto adjust saiz navbar ===*/
-window.onload = function() {
-  let navbar = document.querySelector('nav');
-  if(navbar) {
-    let navbarHeight = navbar.offsetHeight;
-    document.documentElement.style.scrollPaddingTop = navbarHeight + 20 + 'px';
-    console.log('🎯 NUCLEAR STRIKE: Scroll padding set to ' + (navbarHeight + 20) + 'px');
-  }
-};
-
-</script>
+</script>       
 </body>
 </html>
