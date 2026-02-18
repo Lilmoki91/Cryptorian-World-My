@@ -64,28 +64,69 @@ html {
       }
     }
     
-     /* kotak kapsul link - SAIZ NORMAL */
+     /*========================================*/
+   /* kotak kapsul link - SAIZ NORMAL */
      .glow-button {
-      background: linear-gradient(135deg, #FF00FF, cyan);
-      font-weight: 600;
-      transition: all 0.3s ease-in-out;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 18px !important; /* NORMAL semula */
-      font-size: 16px !important; /* NORMAL semula */
-      border-radius: 9999px;
-      white-space: nowrap !important;
-      word-break: break-word !important;
-    }
+    background: linear-gradient(135deg, #FF00FF, cyan);
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 18px !important;
+    font-size: 16px !important;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    word-break: break-word;
+    /* --- EFEK 3D KING --- */
+    /* 1. Bayang hitam kat bawah (Timbul) 
+       2. Highlight putih nipis kat atas (Nampak melengkung)
+       3. Glow halus ikut warna tema */
+    box-shadow: 
+        0 6px 0 #b300b3, /* Bayang gelap kat bawah (pijakan butang) */
+        0 8px 15px rgba(0, 0, 0, 0.4), /* Bayang lembut (shadow) */
+        inset 0 4px 4px rgba(255, 255, 255, 0.3); /* Cahaya pantulan atas */
+    
+      transition: all 0.1s ease; /* Biar dia rasa "spring" */
+      position: relative;
+}
 
-    .glow-button:hover {
-     transform: translateY(-2px);
-    }
+     .glow-button:hover {
+       transform: translateY(-2px);
+       box-shadow: 
+        0 8px 0 #b300b3, 
+        0 12px 20px rgba(0, 0, 0, 0.5),
+        inset 0 4px 4px rgba(255, 255, 255, 0.4);
+    filter: brightness(1.1); /* Biar dia bercahaya sikit masa hover */
+}
 
-    /* Container untuk button */
+     .glow-button:active {
+    /* Bila tekan, butang "rapat" ke lantai */
+    transform: translateY(4px); 
+    box-shadow: 
+        0 2px 0 #b300b3, 
+        0 4px 10px rgba(0, 0, 0, 0.3),
+        inset 0 2px 2px rgba(255, 255, 255, 0.2);
+
+/* Bila klik, tukar bayang jadi biru bercahaya (Flash) */
+    box-shadow: 0 0 30px rgba(0, 150, 255, 1); 
+    background: linear-gradient(135deg, #0077ff, #00ffff); /* Tukar warna biru kejap */
+    transform: scale(0.98); /* Butang mengecil sikit (feel tekan) */
+    transition: 0s; /* Flash kena laju (0 saat) */
+
+/* 1. Tambah animasi flash */
+@keyframes flash-animation {
+    0% { background-color: rgba(0, 150, 255, 0.7); }
+    100% { background-color: transparent; }
+}
+
+}
+/*========================================*/
+
+/* Container untuk button */
     .button-container {
       display: flex;
       flex-wrap: wrap;
@@ -541,7 +582,62 @@ button[aria-label="copy"]:active,
 .chat-input-wrapper:hover::after {
   opacity: 1;
 }
+
+/*========================================*/
+/*Butang hubungi encik johan*/
+  .btn-3d-johan {
+    /* Guna flex supaya ikon & teks sentiasa sebelah-menyebelah */
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; /* Ikon bermula dari kiri */
+    gap: 15px; /* Jarak antara ikon dan teks */
+    
+    background: linear-gradient(135deg, #FF00FF, cyan);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 90%; /* Lebar butang */
+    max-width: 400px;
+    margin: 20px auto;
+    cursor: pointer;
+    border: none;
+    transition: all 0.1s ease;
+    
+    /* EFEK 3D */
+    box-shadow: 0 6px 0 #b300b3, 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 4px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Efek Hover */
+  .btn-3d-johan:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+  }
+
+  /* EFEK KLIK (FLASH BIRU + TURUN) */
+  .btn-3d-johan:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #b300b3, 0 0 40px rgba(0, 150, 255, 1);
+    filter: brightness(1.3);
+    transition: 0s;
+  }
+
+  /* Pastikan saiz ikon tetap & tak mengecil */
+  .btn-3d-johan i {
+    font-size: 30px;
+    flex-shrink: 0; /* Ikon takkan kemek kalau teks panjang */
+  }
+
+  /* Pastikan teks tersusun kemas */
+  .btn-3d-johan span {
+    text-align: left;
+    line-height: 1.2;
+    font-size: 15px;
+  }
+/*========================================*/
 </style>
+
 
 <!------------------------------------------>
 <!--- HTML NAVBAR --->
@@ -806,48 +902,41 @@ button[aria-label="copy"]:active,
   </div>
 </section>
 
-  <section style="text-align: center; margin: 20px 0;">
-  <!-- Link biasa, buang semua flex komplex -->
-  <a href="https://t.me/johansetia" target="_blank" rel="noopener noreferrer" 
-     style="
-       display: inline-block;
-       background: linear-gradient(135deg, #FF00FF, cyan);
-       color: white;
-       padding: 12px 24px;
-       border-radius: 50px;
-       text-decoration: none;
-       font-weight: 600;
-       max-width: 90%;
-       text-align: left;
-     ">
-     
-    <!-- Icon guna inline-block, bukan flex -->
-    <i class="fab fa-telegram" 
-       style="
-         display: inline-block;
-         vertical-align: middle;
-         margin-right: 10px;
-         font-size: 30px;
-       "></i>
-    
-    <!-- Span guna inline -->
-    <span style="display: inline-block; vertical-align: middle; max-width: 80%;">
-      Hubungi Encik Johan untuk sebarang pertanyaan lanjut.
-    </span>
+  <!--- huhungi encik johan --->
+  <section style="text-align: center;">
+  <a href="https://t.me/johansetia" target="_blank" class="btn-3d-johan">
+    <i class="fab fa-telegram"></i>
+    <span>Hubungi Encik Johan untuk sebarang pertanyaan lanjut.</span>
   </a>
 </section>
-   
+
 
 <!-- Footer tajuk akhir layar web -->
-<footer class="py-4 px-1 text-center text-gray-300/80 text-xs font-solid  mt-12">
-  <div class="space-y-0.5 leading-tight">
-    <p class="m-0 p-0">Dibangunkan oleh: <i class= "fab fa-telegram text-sm text-gray-300"></i> <a href="https://t.me/johansetia" class="text-blue-400 hover:text-blue-400 transition-colors underline hover">@johansetia</a></p>
-    <p class="m-0 p-0">Kod Rujukan WorldApps: <span class="text-yellow-300 font-semibold">4RH0OTE</span></p>
-    <p class="m-0 p-0">Channel group: <i class= "fab fa-telegram text-sm text-gray-300"></i>
-        
-    <a href="https://t.me/cucikripto" class="text-blue-400 hover:text-blue-400 underline hover"> @Cryptorian World MY</a></p>
-    <p class="m-0 p-0 pt-1 text-gray-300/80">Hak cipta &copy; <span id="current-year"></span> Cryptorian World My&trade; Semua hak cipta terpelihara.</p>
-  </div>
+<footer class="mt-20 py-6 border-t border-cyan-500/20 text-center bg-gradient-to-b from-transparent to-black/70">
+    
+    <p class="text-white font-bold text-lg tracking-wider mb-1">
+        CRYPTORIAN WORLD MY™
+    </p>
+    
+    <p class="text-gray-500 text-xs mb-6">
+        &copy; Hak Cipta Terpelihara 2026
+    </p>
+
+    <div class="flex justify-center gap-8 mb-6">
+        <a href="https://t.me/johansetia" target="_blank" class="text-cyan-400 text-3xl hover:text-cyan-300 transition-all duration-300 drop-shadow-[0_0_8px_rgba(0,217,255,0.5)]">
+            <i class="fas fa-user-tie"></i>
+        </a>
+        <a href="https://t.me/cucikripto" target="_blank" class="text-cyan-400 text-3xl hover:text-cyan-300 transition-all duration-300 drop-shadow-[0_0_8px_rgba(0,217,255,0.5)]">
+            <i class="fas fa-bullhorn"></i>
+        </a>
+        <a href="https://t.me/SmartAasa_bot" target="_blank" class="text-cyan-400 text-3xl hover:text-cyan-300 transition-all duration-300 drop-shadow-[0_0_8px_rgba(0,217,255,0.5)]">
+            <i class="fas fa-robot"></i>
+        </a>
+    </div>
+
+    <p class="text-gray-600 text-[10px] uppercase tracking-[2px] mb-0">
+        Built with vanilla js • Hosted on Github
+    </p>
 </footer>
 </main>
 
