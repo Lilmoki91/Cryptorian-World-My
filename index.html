@@ -1072,21 +1072,21 @@ document.addEventListener('click', function(e) {
 
 //📌sistem kembali ke side tab side menu open
 // Auto buka slide menu kalau ada parameter
+// Auto buka slide menu kalau ada parameter
 window.addEventListener('load', function() {
   const urlParams = new URLSearchParams(window.location.search);
   
   // Buka menu kalau ?menu=open
   if (urlParams.get('menu') === 'open') {
     setTimeout(() => {
-      slideMenu.classList.add('open');
-      menuOverlay.classList.remove('hidden');
+      // GUNA ID YANG BETUL: slide-menu
+      document.getElementById('slide-menu').classList.add('open');
+      document.getElementById('menu-overlay').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
       console.log('📱 Menu auto dibuka');
     }, 300);
   }
-// Handle hash scroll (yang sedia ada)
-  handleHashScroll();
-});      
+});     
 
 
        
