@@ -166,11 +166,11 @@ Tidak dibenarkan mengedar semula tanpa kebenaran.
 ---
 
 💬 HUBUNGI & KOMUNITI
-```
+
 · 📢 Channel Telegram: @cucikripto
 · 🆘 Admin: @johansetia
 · 🌐 GitHub: Lilmoki91
-```
+
 ---
 
 🙏 PENGHARGAAN
