@@ -8,7 +8,7 @@
      >^<
    🎉🎉🎉
 WEBSITE SIAP!
-   🚀✨💙
+   🚀✨♥️
 ```
 
 
@@ -142,7 +142,7 @@ Dalam index.html, cari:
 const MODEL = "GENERATIVE LLM";
 ```
 
-Boleh tukar ke "gemini-1.5-flash" jika mahu kepatuhan arahan lebih baik.
+Boleh tukar ke "gemini✨" jika mahu kepatuhan arahan lebih baik.
 
 Tukar Kod Rujukan
 
@@ -189,7 +189,7 @@ Terima kasih kepada:
       /\_/\
      ( o.o )
       > ^ <
-     🧚‍♀️✨💙
+     ✨🌙♥️
   "BANTU SAMPAI FAHAM!"
   
   LUNA AI CHATBOT
