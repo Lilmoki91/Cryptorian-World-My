@@ -1,7 +1,7 @@
-```
+
 # 🌐 CRYPTORIAN WORLD MY – WEBSITE & LUNA AI CHATBOT
 
-```
+
 
 /\_/\
 (o.o)
@@ -10,7 +10,7 @@
 WEBSITE SIAP!
 🚀✨💙
 
-```
+
 
 Selamat datang ke repositori **Cryptorian World My** – sebuah **website statik** dengan **Luna AI Chatbot** pintar yang membantu pengguna di Malaysia memahami dan menggunakan **Worldcoin**, **Hata Wallet**, serta proses **Cashout WLD ke MYR**.
 
@@ -72,11 +72,11 @@ Ini adalah **website ringkas** yang mengandungi:
 
 ### 🌐 Website Langsung
 Buka URL ini di browser:
-```
+
 
 https://lilmoki91.github.io/Cryptorian-World-My/
 
-```
+
 
 ### 💬 Guna Luna AI Chatbot
 1. Scroll ke bahagian **Luna Ai chatbot**
@@ -139,7 +139,7 @@ Tukar AI Model
 Dalam index.html, cari:
 
 ```javascript
-const MODEL = "gemma-3n-e4b-it";
+const MODEL = "GENERATIVE LLM";
 ```
 
 Boleh tukar ke "gemini-1.5-flash" jika mahu kepatuhan arahan lebih baik.
