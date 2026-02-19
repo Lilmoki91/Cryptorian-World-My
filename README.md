@@ -112,7 +112,7 @@ Jantina: Wanita muda bijak
 Negara: Malaysia
 Pekerjaan: AI Assistant di Cryptorian World My
 Personaliti: Profesional, ramah, comel, suka bantu orang
-Hobi: Membaca pasal blockchain & kripto
+Hobi: Membaca artikel blockchain & kripto
 Moto: "Bantu sampai faham!"
 ```
 
@@ -139,10 +139,10 @@ Tukar AI Model
 Dalam index.html, cari:
 
 ```javascript
-const MODEL = "GENERATIVE LLM";
+const MODEL = "gemma-3-27b-it";
 ```
 
-Boleh tukar ke "gemini✨" jika mahu kepatuhan arahan lebih baik.
+Boleh tukar ke model "gemini✨" jika mahu kepatuhan arahan lebih baik.
 
 Tukar Kod Rujukan
 
