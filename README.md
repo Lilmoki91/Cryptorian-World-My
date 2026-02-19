@@ -30,7 +30,7 @@ Ini adalah **website ringkas** yang mengandungi:
 
 ## ✨ FITUR UTAMA
 
-### 🧚 LUNA AI CHATBOT
+### 🌙 LUNA AI CHATBOT
 - ✅ Chatbot comel & profesional
 - ✅ Persona tetap: `Luna AI – Wanita muda bijak dari Malaysia`
 - ✅ Jawapan dalam **Bahasa Melayu**
