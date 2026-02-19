@@ -169,7 +169,7 @@ Tidak dibenarkan mengedar semula tanpa kebenaran.
 
 • 📢 Channel Telegram: [@cucikripto](https://t.me/cucikripto)
 • 🆘 Admin:[ @johansetia](https://t.me/johansetia)
-• 🌐 GitHub: [Lilmoki91](https://github.com/Lilmoki91)
+     • 🌐 GitHub: [Lilmoki91](https://github.com/Lilmoki91)
 
 ---
 
