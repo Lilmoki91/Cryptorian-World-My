@@ -190,7 +190,7 @@ Terima kasih kepada:
      ( o.o )
       > ^ <
      ✨🌙♥️
-  "BANTU SAMPAI FAHAM!"
+"BANTU SAMPAI FAHAM!"
   
   LUNA AI CHATBOT
   WEBSITE CRYPTORIAN
