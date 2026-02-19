@@ -62,7 +62,7 @@ Ini adalah **website ringkas** yang mengandungi:
 | **CSS Framework** | [Tailwind CSS](https://tailwindcss.com) (CDN) |
 | **Ikon** | [Heroicons](https://heroicons.com) (SVG) |
 | **Markdown Parser** | [Marked.js](https://marked.js.org) |
-| **AI Model** | Google Gemini / Gemma (`gemma-3n-e4b-it`) |
+| **AI Model** | Google Gemini / Gemma (`gemma-3-27b-it`) |
 | **Hosting** | [GitHub Pages](https://pages.github.com) |
 | **Data Panduan** | `markdown.json` dari GitHub RAW |
 
