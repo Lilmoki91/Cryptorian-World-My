@@ -167,9 +167,9 @@ Tidak dibenarkan mengedar semula tanpa kebenaran.
 
 💬 HUBUNGI & KOMUNITI
 
-· 📢 Channel Telegram: [@cucikripto](https://t.me/cucikripto)
-· 🆘 Admin:[ @johansetia](https://t.me/johansetia)
-· 🌐 GitHub: Lilmoki91
+• 📢 Channel Telegram: [@cucikripto](https://t.me/cucikripto)
+• 🆘 Admin:[ @johansetia](https://t.me/johansetia)
+• 🌐 GitHub: [Lilmoki91](https://github.com/Lilmoki91)
 
 ---
 
