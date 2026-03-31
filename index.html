@@ -5,13 +5,6 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-<!-- 📌pwa sistem📌 -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0066ff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<!---------------->
-
 <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/lib/marked.umd.min.js"></script>
 
 <meta charset="UTF-8"/>
@@ -1213,39 +1206,6 @@ document.getElementById('copyBtn-video').addEventListener('click', () => {
 // Current year
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-// 📌 pwa system cache
-// ==============================================
-// 🚨 FORCE SERVICE WORKER UPDATE
-// ==============================================
-if ('serviceWorker' in navigator) {
-  // Unregister semua SW lama
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    registrations.forEach(reg => reg.unregister());
-  });
-  
-  // Register SW baru
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => {
-        console.log('✅ SW v3 registered');
-        
-        // Auto update
-        reg.update();
-        
-        // Kalau ada waiting, activate
-        if (reg.waiting) {
-          reg.waiting.postMessage({type: 'SKIP_WAITING'});
-        }
-      })
-      .catch(err => console.log('❌ SW failed:', err));
-  });
-  
-  // Reload bila SW baru active
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
-  });
-}
-       
 </script>       
 </body>
 </html>
