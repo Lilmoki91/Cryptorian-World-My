@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+<!--- awesome css --->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+ 
+<!-- ✅ Tailwind CSS - VERSION TERBARU -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <title>Cryptorian Luna Ai chatbot</title>
+</head>
+
+<style>
+/* CSS Ringkas dan Bersih */
+:root {
+  --bg: #1f2937;
+  --card: #374151;
+  --accent: #60a5fa;
+  --muted: #d1d5db;
+}
+
+
+/📌* Efek bintang background */
+.chat-app {
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(2px 2px at 20px 30px, #5A6CF9, rgba(0,0,0,0));
+  background-size: 35px 35px;
+  background-repeat: repeat;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+/*📌 Pastikan content berada di atas bintang */
+.chat-app > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-app {
+  width: 22rem;
+  max-width: 100%;
+  height: 100vh;
+  background: linear-gradient(50deg, hotpink, #40E0D0,  #FFB347);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+header {
+  flex-shrink: 0;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  color: navy;
+  border: 10px;  
+  margin-top: 1.5rem !important;
+}
+
+#chat-log {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  margin-top: 1.0rem !important;
+  scroll-behavior: smooth;
+  padding-top: 10px !important;
+}
+
+/* Counter spacing */
+.flex.justify-between.items-center.px-4.py-1 {
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(64, 224, 208, 0.2);
+}
+
+.msg {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.user .bubble {
+  margin-left: auto;
+  background: green;
+  color: white;
+  border-radius: 15px 15px 0 15px;
+  overflow-wrap: break-all;
+  word-break: break-word;
+}
+
+.ai .bubble {
+  margin-right: auto;
+  background: #001f3f;
+  color: white;
+  border-radius: 15px 15px 15px 0;
+  overflow-wrap: break-all;
+  word-break: break-word;
+}
+
+.bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  line-height: 1.5;
+  white-space: normal; /*← Default, boleh tak perlu tulis pre-wrap, pre-line,normal */
+  overflow-wrap: break-all;
+  word-break: break-word;
+  
+  /* Untuk auto sizing bubble */
+  display: inline-block;
+  width: fit-content;
+  max-width: min(85%, 600px);
+}
+
+.controls {
+  display: flex;
+  padding: 15px;
+  gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+  padding: 15px !important;
+}
+
+
+#user-input {
+  flex: 1;
+  padding: 10px 13px;
+  border-radius: 20px;
+  border: 1px solid #4b5563;
+  background: #001f3f;
+  color: white;
+  outline: none;
+  font-size: 15px;
+  }
+  
+
+.typing-cursor::after {
+  content: "✏️";
+  display: inline-block;
+  font-size: 1.2em;
+  margin-left: 6px;
+  animation: 
+    blink 0.3s infinite,
+    glow 1.5s infinite alternate;
+  text-shadow: 
+    0 0 10px #FFD700,
+    0 0 20px #FFB347;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFB347; }
+  to { text-shadow: 0 0 15px #FFD700, 0 0 30px #FFB347; }
+}
+
+/* Tambah selepas .typing-cursor::after { } */
+/* Loading dots animation */
+.loading-dots {
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 31, 63, 0.7);
+  border-radius: 15px 15px 15px 0;
+  align-items: center;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.loading-dots .dot {
+  font-size: 1.0em;
+  animation: dot-bounce 1.2s infinite ease-in-out;
+  opacity: 0.5;
+}
+
+.loading-dots .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.loading-dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loading-dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+    text-shadow: 0 0 5px #FFD700;
+  }
+  50% {
+    transform: translateY(-8px) scale(1.1);
+    opacity: 1;
+    text-shadow: 
+      0 0 15px #FFD700,
+      0 0 25px #FFB347;
+  }
+}
+
+
+/* Arrow Scroll Down Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-10px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+
+/* Hover effect */
+#scroll-down-btn:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 255, 255, 0.4), 0 10px 10px -5px rgba(0, 255, 255, 0.2);
+}
+
+/* Responsive untuk mobile */
+@media (max-width: 640px) {
+  #scroll-down-btn {
+    bottom: 85px;
+    right: 50%;
+    width: 35px;
+    height: 35px;
+  }
+  #scroll-down-btn i {
+    font-size: 1.5rem;
+  }
+}
+
+/* Slide animations button closed */
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slide-out {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Hover effects */
+.hover-rotate:hover {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
+}
+
+/* Header spacing fix */
+header {
+  margin-bottom: 5px !important;
+  padding-bottom: 5px !important;
+  border-bottom: 1px solid rgba(64, 224, 208, 0.2) !important;
+}
+
+/* Jeda antara header dan chat-log */
+#chat-log {
+  margin-top: 8px;
+}
+
+/* System message dengan glow effect */
+.msg.system .bubble {
+  margin: 0 auto;
+  background: rgba(255, 68, 68, 0.2);
+  border: 1px solid #ff4444;
+  color: #ff5555;
+  font-size: 0.9em;
+  text-align: center;
+  max-width: 90%;
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.5); /* ← TAMBAH GLOW */
+  text-shadow: 0 0 5px rgba(255, 85, 85, 0.5); /* ← TAMBAH GLOW PADA TEKS */
+}
+
+.msg.system {
+  justify-content: center;
+}
+</style>
+
+<body>
+<div class="chat-app">
+
+  <header class="relative mb-6 pb-4 border-b border-cyan-400/30">
+  <div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-t-2xl">
+    <!-- Kiri: Title & Subtitle -->
+    <div class="transform transition-all duration-500 hover:scale-105">
+      <h2 class="text-xl font-bold text-navy-900 flex items-center gap-2">
+        <i class="fas fa-globe-americas text-cyan-600"></i> 
+        <span class="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent"> Cryptorian world-My
+        </span>
+      </h2>
+      <p class="text-xs text-purple-600 flex items-center gap-1">
+        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span><a class="fas fa-wand-magic-sparkles"></a> Luna Ai chatbot assistant <a class= "fas fa-moon"></a>
+      </p>
+    </div>
+    
+    <!-- Kanan: Butang Close - DAH NAMPAK! -->
+    <button id="close-menu-btn" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-rose-500 text-white shadow-lg transition-all duration-500 hover:from-red-600 hover:to-rose-600 hover:rotate-90 hover:scale-110 active:scale-95 group" onclick="window.location.href='index.html?menu=open'">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transition-all duration-500 group-hover:rotate-90">
+        <path stroke-linecap="round" stroke-linecap="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- butang scroll down -->
+<button id="scroll-down-btn" class="fixed bottom-24 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg animate-bounce">
+  <!-- Arrow Down Icon (Heroicons) -->
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+    <path stroke-linecap="round" stroke-linecap="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+  </svg>
+</button>
+
+  <div id="chat-log"></div>
+
+  <div class="controls">
+    <input id="user-input" type="text" placeholder="Taip mesej anda..." autocomplete="on" />
+
+
+ <!-- butang send mesej -->
+ <button id="send-btn" class="bg-green-700 text-white font-bold p-3 rounded-full disabled:bg-gray-400 transition-all duration-300 shadow-md hover:shadow-lg">
+  <!-- Paper Airplane Icon (Heroicons) -->
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+    <path stroke-linecap="round" stroke-linecap="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+  </svg>
+</button>
+</div>
+
+<!-- Dalam header atau dekat input, tambah character counter -->
+<div class="flex justify-between items-center px-4 py-1 text-xs text-red-500">
+  <span id="char-counter" class="text-red/60">0/500</span>
+  <span class="text-red/40">Maksimum 500 huruf</span>
+</div>
+
+
+<!-----------📌JAVA SCRIPT📌--------------->
+
+<script type="module">
+// IMPORT LIBRARY MARKDOWN
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
+import { GoogleGenAI } from 'https://cdn.jsdelivr.net/npm/@google/genai@latest/+esm';
+
+// ==============================================
+// 🔐 IPFS + AES-GCM LOADER UNTUK LUNA AI
+// ==============================================
+
+const LUNA_CONFIG = {
+    cid: "QmUPHGWK7RPT4Rcuyfd7R6CS9UTXnfzD8TFytLcD9pDQc4",
+    aesKey: "JBMST2Ip8HCuHgRvCZb/+94VdRlWM9jhNIPTaiaorz8=",
+    gateway: "https://gateway.pinata.cloud/ipfs/",
+    aiEndpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemma-3-27b-it:generateContent"
+};
+
+let API_KEY = null;
+let apiKeyLoaded = false;
+let ai = null;
+
+// ================================
+// 1. DECRYPT FUNCTION
+// ================================
+async function decryptAESGCM(combined, keyBase64) {
+    if (!window.crypto || !window.crypto.subtle) {
+        throw new Error('Web Crypto API tidak disokong');
+    }
+    
+    try {
+        const keyBuffer = Uint8Array.from(atob(keyBase64), c => c.charCodeAt(0));
+        const key = await crypto.subtle.importKey(
+            'raw', 
+            keyBuffer, 
+            { name: 'AES-GCM' }, 
+            false, 
+            ['decrypt']
+        );
+        
+        const iv = combined.slice(0, 12);
+        const encryptedData = combined.slice(12);
+        
+        const decrypted = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv }, 
+            key, 
+            encryptedData
+        );
+        
+        return decrypted;
+    } catch (error) {
+        console.error('❌ Decrypt error:', error);
+        throw error;
+    }
+}
+
+// ================================
+// 2. LOAD API KEY DARI IPFS
+// ================================
+async function initLunaAI() {
+    try {
+        console.log('🔍 Loading API key untuk Luna AI dari IPFS...');
+        
+        const response = await fetch(LUNA_CONFIG.gateway + LUNA_CONFIG.cid);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const encryptedData = new Uint8Array(await response.arrayBuffer());
+        console.log(`📦 Data diterima: ${encryptedData.length} bytes`);
+        
+        const decryptedData = await decryptAESGCM(encryptedData, LUNA_CONFIG.aesKey);
+        const data = JSON.parse(new TextDecoder().decode(decryptedData));
+        
+        API_KEY = data.API_KEY;
+        
+        // ✅ Init GoogleGenAI dengan API key yang selamat
+        ai = new GoogleGenAI({ apiKey: API_KEY });
+        
+        apiKeyLoaded = true;
+        console.log('✅ Luna AI sedia digunakan! 🌙✨');
+        
+        // Enable UI selepas API key siap
+        document.getElementById('user-input').disabled = false;
+        document.getElementById('send-btn').disabled = false;
+        
+        return true;
+        
+    } catch (error) {
+        console.error('❌ Gagal init Luna AI:', error);
+        // Tunjuk error di chat
+        const errorMsg = "⚠️ Gagal muat API key. Sila refresh halaman.";
+        addMessage("system", errorMsg);
+        return false;
+    }
+}
+
+// ================================
+// 3. PANGGIL MASA PAGE LOAD
+// ================================
+initLunaAI();
+
+// ================================
+// 4. MODEL
+// ================================
+const MODEL = "gemma-3-27b-it";
+
+// ✨ FILE: persona.js
+const PERSONA_LUNA = `Nama: Luna Ai
+Umur: 20 tahun
+Jantina: Wanita muda Bijak
+Negara Asal-usul: Malaysia
+Pekerjaan: AI Assistant Cryptorian World My
+Personaliti: Profesional, ramah, comel, suka bantu orang
+Hobi: Membaca artikel teknologi blockchain kewangan kripto dan web3
+Moto: "Bantu sampai faham!" ✨`;
+
+// 🎯 FILE: prompt.js
+function binaPrompt(soalan, panduan) {
+    return `Anda adalah Luna AI. Ikut arahan ini:
+
+## 📋 PERATURAN UTAMA
+• Jawab dalam BAHASA MELAYU sahaja
+• Gunakan emoji menarik ✨🌙
+• Ringkas & jelas (max 3-4 ayat)
+• Jangan kongsi password/kod peribadi
+• Jangan beri nasihat kewangan
+
+## 💎 FORMAT JAWAPAN
+Guna Markdown:
+- **Bold** untuk penting (**teks**)
+- *Italic* untuk penekanan halus (*teks*)
+- \`code\` untuk kod referral (\`4RH0OTE\`)(\`186300\`)
+- Baris baru untuk setiap ayat (double enter/ new line, break word)
+- Garis pemisah untuk baris baru (---)
+- # Header tajuk utama (# text)
+- ### Header sub-tajuk (### text)
+- - List bernombor untuk step-by-step
+- • Bullet untuk senarai (* text)
+- > Quotes untuk petikan (> text)
+- [text](url) untuk pautan link internet
+
+## 📚 PANDUAN RASMI:
+${JSON.stringify(panduan, null, 2)}
+
+## 📝 CONTOH JAWAPAN IDEAL (IKUT GAYA INI):
+
+User: "Apa itu Worldcoin?"
+
+Luna: "# **Mengenali Worldcoin** ✨
+
+---
+
+
+Worldcoin adalah projek **identiti digital** global yang memberikan ganjaran kripto secara percuma kepada manusia sebenar. 🌙
+
+### **Kenapa Ia Unik?**
+• Menggunakan teknologi *Orb* untuk pengesahan identiti.
+• Memberikan akses kewangan kepada sesiapa sahaja di dunia.
+
+---
+
+
+> "Masa depan kewangan digital kini di tangan anda."
+
+Sertai sekarang dengan kod referral: \`4RH0OTE\`
+Klik di sini: [World App](https://worldcoin.org/download)"
+`;
+}
+
+// 📖 FILE: panduan.js
+const PANDUAN_URL = "https://raw.githubusercontent.com/Lilmoki91/CRYPTORIAN-TELEBOT/refs/heads/main/markdown.json";
+
+async function dapatPanduan() {
+    try {
+        const response = await fetch(PANDUAN_URL);
+        const data = await response.json();
+        console.log("✅ Panduan dimuatkan");
+        return data;
+    } catch (error) {
+        console.error("❌ Gagal muat panduan:", error);
+        return null;
+    }
+}
+
+// 💬 FILE: chat.js (Ubah suai untuk guna ai yang dah diinit)
+async function chatLuna(soalan) {
+    if (!apiKeyLoaded || !ai) {
+        throw new Error('API key belum sedia');
+    }
+    
+    const panduan = await dapatPanduan();
+    const arahan = binaPrompt(soalan, panduan);
+    const fullPrompt = `${PERSONA_LUNA}\n\n${arahan}`;
+    
+    // Gunakan ai yang dah diinit
+    const response = await fetch(`${LUNA_CONFIG.aiEndpoint}?key=${API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: fullPrompt }] }]
+        })
+    });
+    
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+}
+
+// --- Sejarah Perbualan (diuruskan secara manual) ---
+let history = [];
+
+// DOM Elements
+const chatLog = document.getElementById("chat-log");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+
+// KONFIGURASI MARKED.JS
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+  headerIds: false,
+  mangle: false,
+  sanitize: false
+});
+
+// =========================================
+// FUNGSI UNTUK PARSE MARKDOWN KE HTML DENGAN STYLING
+// =========================================
+function parseMarkdownToStyledHTML(text) {
+  try {
+    // Simpan kod rujukan sebelum dibersihkan
+    const kodRujukan = cariKodRujukan(text);
+    
+    let textBersih = text
+      .replace(/https?:\/\/[^\s]+/g, match => {
+        return match.replace(/4RH0OTE|186300/g, '[KOD]');
+      });
+    
+    let html = marked.parse(textBersih);
+    
+    kodRujukan.forEach(kod => {
+      const kodEscape = kod.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(?<!<a[^>]*>)(${kodEscape})(?!</a>)`, 'g');
+      
+      html = html.replace(regex, (match, kod) => {
+        return `<span style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 255, 0, 0.1); padding: 2px 8px; border-radius: 6px; border: 1px solid #00FF00;">
+          <span style="font-family: monospace; font-weight: bold; color: #00FF00;">${kod}</span>
+          <button onclick="copyToClipboard('${kod}')" style="background: #40E0D0; color: black; border: none; border-radius: 4px; padding: 4px 12px; font-size: 12px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;" 
+            onmouseover="this.style.background='#FFB347'; this.style.transform='scale(1.05)'" 
+            onmouseout="this.style.background='#40E0D0'; this.style.transform='scale(1)'">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
+              <path stroke-linecap="round" stroke-linecap="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+            </svg>
+            Copy
+          </button>
+        </span>`;
+      });
+    });
+
+    html = html.replace(/<strong>(.*?)<\/strong>/g, '<strong style="font-weight: 700; color: #FFD700;">$1</strong>');
+    html = html.replace(/<em>(.*?)<\/em>/g, '<em style="font-style: italic; color: #FFB347;">$1</em>');
+    html = html.replace(/<code>(.*?)<\/code>/g, '<code style="background: rgba(255, 255, 255, 0.1); padding: 3px 8px; border-radius: 6px; font-family: monospace; border: 1px solid rgba(255, 255, 255, 0.2); color: #00FF00;">$1</code>');
+    
+    html = html.replace(/<pre><code>/g, '<pre style="background: rgba(0, 0, 0, 0.7); color: #f3f4f6; padding: 14px; border-radius: 8px; overflow-x: auto; margin: 12px 0; border-left: 5px solid #40E0D0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);"><code style="background: transparent; border: none; padding: 0; font-size: 0.95em;">');
+    html = html.replace(/<\/code><\/pre>/g, '</code></pre>');
+    
+    html = html.replace(/<ul>/g, '<ul style="margin: 10px 0 10px 25px; padding-left: 15px; list-style-type: disc;">');
+    html = html.replace(/<ol>/g, '<ol style="margin: 10px 0 10px 25px; padding-left: 15px; list-style-type: decimal;">');
+    html = html.replace(/<li>/g, '<li style="margin: 6px 0; line-height: 1.6; color: #E0E0E0;">');
+    
+    html = html.replace(/<h1>/g, '<h1 style="font-size: 1.5em; font-weight: 700; color: #FFFFFF; margin: 18px 0 10px 0; line-height: 1.3; padding-bottom: 5px;">');
+    html = html.replace(/<h2>/g, '<h2 style="font-size: 1.4em; font-weight: 700; color: #F0F0F0; margin: 18px 0 10px 0; line-height: 1.3; border-left: 4px solid #FFB347; padding-left: 10px;">');
+    html = html.replace(/<h3>/g, '<h3 style="font-size: 1.3em; font-weight: 700; color: #E0E0E0; margin: 18px 0 10px 0; line-height: 1.3;">');
+    
+    html = html.replace(/<blockquote>/g, '<blockquote style="border-left: 5px solid #60a5fa; padding: 10px 15px; margin: 12px 0; color: #CCCCCC; font-style: italic; background: rgba(96, 165, 250, 0.1); border-radius: 0 8px 8px 0;">');
+    
+    html = html.replace(/<a href="(.*?)">(.*?)<\/a>/g, '<a href="$1" style="color: #00FFFF; text-decoration: underline; transition: color 0.3s;" onmouseover="this.style.color=\'#FFB347\'; this.style.textDecoration=\'none\'" onmouseout="this.style.color=\'#00FFFF\'; this.style.textDecoration=\'underline\'">$2</a>');
+    
+    return html;
+    
+  } catch (err) {
+    console.warn('Error:', err);
+    return text;
+  }
+}
+
+function scrollDown() { 
+  if (chatLog) chatLog.scrollTop = chatLog.scrollHeight; 
+}
+
+function cariKodRujukan(text) {
+  const kodRasmi = ['4RH0OTE', '186300'];
+  let kodJumpa = [];
+  
+  const textTanpaURL = text.replace(/https?:\/\/[^\s]+/g, '[URL]');
+  const textBersih = textTanpaURL
+    .replace(/join\/\w+/g, '')
+    .replace(/ref=\w+/g, '');
+  
+  kodRasmi.forEach(kod => {
+    const regex = new RegExp(`\\b${kod}\\b`, 'g');
+    if (regex.test(textBersih)) {
+      kodJumpa.push(kod);
+    }
+  });
+  
+  return kodJumpa;
+}
+
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-full shadow-lg z-50 animate-slide-in';
+    toast.innerHTML = `
+      <div class="flex items-center gap-3">
+        <span class="text-xl">✅</span>
+        <span class="font-medium">Kod <span class="font-mono bg-white/20 px-2 py-1 rounded">${text}</span> copied!</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slide-out 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 2000);
+  } catch (err) {
+    console.error('Gagal copy:', err);
+    alert('❌ Gagal salin. Sila salin manual.');
+  }
+}
+
+function addMessage(role, text, isTyping = false) {
+  const div = document.createElement("div");
+  div.className = `msg ${role}`;
+  
+  let bubbleContent;
+  if (isTyping) {
+    bubbleContent = '<div class="typing typing-cursor"></div>';
+  } else if (role === "system") {
+    bubbleContent = `<div style="color: #ff4444;">⚠️ ${text}</div>`;
+  } else {
+    bubbleContent = parseMarkdownToStyledHTML(text);
+  }
+  
+  div.innerHTML = `
+    <div class="bubble">
+      <div class="content">${bubbleContent}</div>
+    </div>
+  `;
+  
+  chatLog.appendChild(div);
+  scrollDown();
+  
+  return isTyping ? div.querySelector('.typing') : div.querySelector('.bubble');
+}
+
+async function typeEffect(el, text, speed = 5) {
+  if(!el) return;
+  el.textContent = "";
+  for(let i = 0; i < text.length; i++){
+    el.textContent += text[i];
+    scrollDown();
+    await new Promise(r => setTimeout(r, speed));
+  }
+  if(el && el.parentElement){
+    const fullHtml = parseMarkdownToStyledHTML(text);
+    el.parentElement.innerHTML = fullHtml;
+    scrollDown();
+  }
+}
+
+async function startTypingGreeting() {
+  const openingText = `# **Hai!** Saya **LUNA AI Chatbot** 🌙, *Assistant Cryptorian World My!* ✨
+
+**Saya boleh bantu anda dengan:**
+> 1️⃣ **Pendaftaran World App** kod \`4RH0OTE\`
+> 2️⃣ **Setup Hata Wallet** kod: \`186300\`
+> 3️⃣ **Cashout WLD ke MYR**
+
+Ada yang boleh saya bantu hari ini? 😊`;
+  
+  const typingEl = addMessage("ai", "", true);
+  await typeEffect(typingEl, openingText, 5);
+  
+  setTimeout(() => {
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+  }, 300);
+}
+
+async function sendMessage() {
+  const userText = userInput.value.trim();
+  
+  if (!userText) return;
+  if (userText.length > 500) {
+    addMessage("system", "⚠️ Mesej terlalu panjang! Maksimum 500 huruf sahaja.");
+    userInput.value = "";
+    userInput.style.border = "2px solid red";
+    setTimeout(() => userInput.style.border = "", 2000);
+    return;
+  }
+  if (userText.length < 2) {
+    addMessage("system", "⚠️ Mesej terlalu pendek. Sila taip soalan anda.");
+    userInput.value = "";
+    return;
+  }
+  
+  userInput.style.border = "";
+  
+  addMessage("user", userText);
+  userInput.value = "";
+  userInput.disabled = true;
+  sendBtn.disabled = true;
+
+  history.push({ 
+    role: "user", 
+    parts: [{ text: userText }] 
+  });
+  
+  const loadingId = "loading-" + Date.now();
+  const loadingHTML = `
+    <div class="msg ai ai-loading" id="${loadingId}">
+      <div class="bubble">
+        <div class="loading-dots">
+          <span class="dot">✨</span>
+          <span class="dot">✨</span>
+          <span class="dot">✨</span>
+        </div>
+      </div>
+    </div>
+  `;
+  chatLog.insertAdjacentHTML('beforeend', loadingHTML);
+  scrollDown();
+
+  try {
+    if (!apiKeyLoaded || !ai) {
+      throw new Error('API key belum sedia. Sila tunggu sebentar.');
+    }
+    
+    const panduan = await dapatPanduan();
+    const arahan = binaPrompt(userText, panduan);
+    const systemPrompt = `${PERSONA_LUNA}\n\n${arahan}`;
+    
+    const config = {
+      generationConfig: {
+        maxOutputTokens: 900,
+        temperature: 0.5,
+        topP: 0.8,
+        topK: 40,
+      }
+    };
+
+    const messages = [
+      {
+        role: "user",
+        parts: [{ text: systemPrompt }]
+      },
+      ...history.slice(-20)
+    ];
+
+    const responseStream = await ai.models.generateContentStream({
+      model: MODEL,
+      config: config,
+      contents: messages
+    });
+
+    let fullReply = '';
+    for await (const chunk of responseStream) {
+      if (chunk.text) {
+        fullReply += chunk.text;
+      }
+    }
+
+    const loadingElement = document.getElementById(loadingId);
+    if (loadingElement) loadingElement.remove();
+    
+    const typingEl = addMessage("ai", "", true);
+    await typeEffect(typingEl, fullReply, 5);
+
+    history.push({ 
+      role: "model", 
+      parts: [{ text: fullReply }] 
+    });
+
+  } catch (err) {
+    console.error("Ralat GenAI:", err);
+    const loadingElement = document.getElementById(loadingId);
+    if (loadingElement) {
+      loadingElement.querySelector('.bubble').innerHTML = 
+        '<div style="color: #FF6B6B;">⚠️ Ralat. Sila cuba lagi.</div>';
+    }
+  } finally {
+    userInput.disabled = false;
+    sendBtn.disabled = false;
+  }
+}
+
+// ================================================
+// EVENT LISTENERS DAN INITIALIZATION
+// ================================================
+sendBtn.onclick = sendMessage;
+
+userInput.addEventListener('input', function() {
+  const counter = document.getElementById('char-counter');
+  if (counter) {
+    const len = this.value.length;
+    counter.textContent = `${len}/500`;
+    counter.style.color = len > 500 ? 'silver' : 'yellow';
+  }
+});
+
+userInput.addEventListener("keydown", e => { 
+  if (e.key === "Enter") sendMessage(); 
+});
+
+// Disable input sehingga API key siap
+userInput.disabled = true;
+sendBtn.disabled = true;
+
+// Tunggu API key siap, baru mula ucapan pembuka
+const waitForAPI = setInterval(() => {
+  if (apiKeyLoaded) {
+    clearInterval(waitForAPI);
+    startTypingGreeting();
+  }
+}, 500);
+
+// ================================================
+// SCROLL DOWN BUTTON FUNCTION
+// ================================================
+function setupScrollButton() {
+  const scrollBtn = document.getElementById('scroll-down-btn');
+  const chatLog = document.getElementById('chat-log');
+  
+  if (!scrollBtn || !chatLog) return;
+  
+  function scrollToBottom() {
+    chatLog.scrollTo({
+      top: chatLog.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
+  
+  scrollBtn.addEventListener('click', scrollToBottom);
+  
+  function toggleScrollButton() {
+    const isScrolled = chatLog.scrollTop < (chatLog.scrollHeight - chatLog.clientHeight - 100);
+    scrollBtn.style.display = isScrolled ? 'flex' : 'none';
+  }
+  
+  toggleScrollButton();
+  chatLog.addEventListener('scroll', toggleScrollButton);
+  
+  const observer = new MutationObserver(toggleScrollButton);
+  observer.observe(chatLog, { childList: true, subtree: true });
+  
+  chatLog.addEventListener('scroll', function() {
+    const isAtBottom = chatLog.scrollTop + chatLog.clientHeight >= chatLog.scrollHeight - 50;
+    if (isAtBottom) scrollBtn.style.display = 'none';
+  });
+}
+
+setTimeout(setupScrollButton, 1000);
+
+</script>
+</body>
+</html>
