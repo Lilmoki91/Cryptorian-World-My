@@ -3,6 +3,7 @@
   "short_name": "Cryptorian My",
   "description": "Panduan claim Worldcoin & Hata Wallet Malaysia dengan AI pintar (Luna AI)",
   "start_url": "./index.html",
+  "scope": "./", // baru
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#00ED64",
