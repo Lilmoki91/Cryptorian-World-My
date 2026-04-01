@@ -11,13 +11,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <title>Cryptorian Luna Ai chatbot</title>
-
-<!-- 📌PWA Meta Tags untuk Luna AI📌 -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#40E0D0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Luna AI">
 </head>
 
 <style>
@@ -944,75 +937,6 @@ function setupScrollButton() {
 }
 
 setTimeout(setupScrollButton, 1000);
-
-// 📌pwa system📌
-// ==============================================
-// 🔄 LUNA AI PWA - AUTO UPDATE + AUTO CLEAR
-// ==============================================
-
-(function() {
-  // ==============================================
-  // 📌 VERSION TRACKING - SAMA DENGAN CRYPTORIAN
-  // ==============================================
-  const APP_VERSION = 'v1.0.1';
-  const STORAGE_KEY = 'cryptorian-version';
-  
-  // ==============================================
-  // 🧹 CLEAR ALL CACHES
-  // ==============================================
-  async function clearAllCaches() {
-    if ('caches' in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map(key => {
-        if (key.includes('cryptorian')) {
-          console.log(`🗑️ Deleting cache: ${key}`);
-          return caches.delete(key);
-        }
-      }));
-    }
-    localStorage.removeItem('cryptorian-chat-history');
-    sessionStorage.clear();
-  }
-  
-  // ==============================================
-  // 📌 CHECK VERSION - AUTO CLEAR CACHE
-  // ==============================================
-  const oldVersion = localStorage.getItem(STORAGE_KEY);
-  
-  if (oldVersion !== APP_VERSION) {
-    console.log(`🔄 Version update: ${oldVersion} → ${APP_VERSION}`);
-    localStorage.setItem(STORAGE_KEY, APP_VERSION);
-    clearAllCaches().then(() => {
-      window.location.reload();
-    });
-  }
-  
-  // ==============================================
-  // 📌 REGISTER SERVICE WORKER
-  // ==============================================
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(registration => {
-          console.log('✅ Luna AI Service Worker registered');
-          registration.update();
-          
-          if (registration.waiting) {
-            registration.waiting.postMessage('SKIP_WAITING');
-          }
-        })
-        .catch(err => {
-          console.log('❌ Service Worker failed:', err);
-        });
-    });
-    
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('⚡ Luna AI Service Worker updated');
-      window.location.reload();
-    });
-  }
-  
-})();
 
 </script>
 </body>
