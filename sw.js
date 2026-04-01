@@ -1,31 +1,32 @@
 // ==============================================
-// 🔄 CRYPTORIAN WORLD - SERVICE WORKER v1
-// AUTO UPDATE & AUTO CLEAR CACHE
+// 🔄 CRYPTORIAN WORLD - SERVICE WORKER v2
 // ==============================================
 
-const CACHE_NAME = 'cryptorian-cache-v1';
-const FILES_TO_CACHE = [
+const CACHE_NAME = 'cryptorian-cache-v2'; // ← TUKAR VERSION!
+
+// JANGAN CACHE LUNA AI & TERMINAL VERIFICATION
+// Biarkan mereka selalu ambil dari network
+const STATIC_FILES = [
   './',
   './index.html',
   './manifest.json',
-  './Luna_Ai.html',
-  './Luna_Ai2.html',
-  './terminal_verification.html',
   './icon-192.png',
   './icon-512.png',
   './icon-192-maskable.png',
   './icon-512-maskable.png'
 ];
 
-// 📦 INSTALL
+// ==============================================
+// 📦 INSTALL - Hanya cache static files
+// ==============================================
 self.addEventListener('install', event => {
-  console.log('⚙️ Installing Cryptorian Service Worker...');
+  console.log('⚙️ Installing Cryptorian SW v2...');
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('📦 Caching files...');
-        return cache.addAll(FILES_TO_CACHE);
+        console.log('📦 Caching static files...');
+        return cache.addAll(STATIC_FILES);
       })
       .then(() => {
         console.log('✅ Cache siap!');
@@ -34,42 +35,56 @@ self.addEventListener('install', event => {
   );
 });
 
-// 🚀 ACTIVATE - BUANG SEMUA CACHE LAMA
+// ==============================================
+:// 🚀 ACTIVATE - BUANG CACHE LAMA
+// ==============================================
 self.addEventListener('activate', event => {
-  console.log('⚡ Activating new Service Worker...');
+  console.log('⚡ Activating new SW...');
   
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
-            console.log(`🗑️ Auto delete old cache: ${key}`);
+            console.log(`🗑️ Delete old cache: ${key}`);
             return caches.delete(key);
           }
         })
       );
     }).then(() => {
-      console.log('✅ Cryptorian Service Worker activated!');
+      console.log('✅ SW v2 activated!');
       return self.clients.claim();
     })
   );
 });
 
-// 🔄 FETCH
+// ==============================================
+:// 🔄 FETCH - Network First untuk HTML
+// ==============================================
 self.addEventListener('fetch', event => {
   const url = event.request.url;
   
-  // JANGAN cache fail dari luar
+  // JANGAN cache API & CDN
   if (url.includes('github.com') || 
       url.includes('googleapis.com') || 
       url.includes('cdnjs.cloudflare.com') ||
       url.includes('tailwindcss.com') ||
-      url.includes('youtube.com') ||
-      url.includes('youtu.be') ||
       url.includes('pinata.cloud')) {
     return;
   }
   
+  // UNTUK LUNA AI & TERMINAL - Network First
+  if (url.includes('Luna_Ai.html') || 
+      url.includes('Luna_Ai2.html') || 
+      url.includes('terminal_verification.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+  
+  // UNTUK STATIC FILES - Cache First
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
@@ -87,18 +102,4 @@ self.addEventListener('fetch', event => {
         });
       })
   );
-});
-
-// 📡 TERIMA MESSAGE
-self.addEventListener('message', event => {
-  if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-  
-  if (event.data === 'CLEAR_CACHE') {
-    caches.delete(CACHE_NAME).then(() => {
-      console.log('✅ Cache cleared by page');
-      event.source.postMessage('CACHE_CLEARED');
-    });
-  }
 });
