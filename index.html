@@ -790,12 +790,26 @@ button[aria-label="copy"]:active,
 </ul>
 
  <!-- Note Section - fixed bawah, ikut scroll? kalau nak ikut scroll, letak dalam ul atas -->
-  <div class="flex-shrink-0 p-4 border-t border-gray-700 bg-gray-900/80">
-    <div class="flex items-start space-x-3">
-      <i class="fas fa-sticky-note text-gray-400 mt-1"></i>
-      <p class="text-gray-400 text-sm">Maklumat dan panduan</p>
-    </div>
+  <!-- Note Section - dengan pautan privasi Worldcoin -->
+<div class="flex-shrink-0 p-4 border-t border-gray-700 bg-gray-900/80">
+  
+  <!-- Pautan Privasi Worldcoin -->
+  <a href="https://world.org/ms-my/privacy" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="flex items-center gap-2 mb-3 p-2 rounded-lg transition-all duration-200 bg-orange-500/20 hover:bg-orange-500/40 active:bg-orange-500/70 active:scale-95"
+     style="background-color: rgba(249, 115, 22, 0.2);">
+    <i class="fas fa-shield-alt text-orange-400 text-sm"></i>
+    <span class="text-orange-300 text-xs font-medium">🔒 Dasar Privasi Worldcoin</span>
+    <i class="fas fa-external-link-alt text-orange-400/70 text-[10px] ml-auto"></i>
+  </a>
+  
+  <!-- Note asal -->
+  <div class="flex items-start space-x-3">
+    <i class="fas fa-sticky-note text-gray-400 mt-1"></i>
+    <p class="text-gray-400 text-xs">Maklumat dan panduan</p>
   </div>
+</div>
 </div>
 
 <!-- Overlay -->
