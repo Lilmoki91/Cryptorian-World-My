@@ -1,0 +1,878 @@
+
+<!-- berita-kripto.html -->
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Kripto Bahasa Malaysia</title>
+    <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5.0.16/index.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 80px; /* ruang untuk ticker fixed */
+        }
+
+        /* Ticker fixed di atas */
+        .ticker-container {
+            
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: navy; /*#0a0a0f;*/
+            border-bottom: 1px solid #222233;
+            backdrop-filter: blur(8px);
+            padding: 6px 0;
+        }
+        .ticker-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker {
+            display: inline-block;
+            animation: tickerScroll 30s linear infinite;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+       
+        .ticker-item {
+            display: inline-block;
+            margin: 0 20px;
+        }
+        .ticker-symbol {
+            font-weight: 700;
+            color: #ddd;
+        }
+        .ticker-price {
+            color: #aaa;
+        }
+        .ticker-change {
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .positive { color: #00ff88; }
+        .negative { color: #ff4444; }
+        @keyframes tickerScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker:hover {
+            animation-play-state: paused;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            margin-top: -1.2rem;
+        }
+
+        /* Header dengan butang X dan Share */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #f7931a, #f2a900);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0a0a0f;
+        }
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+        .title span {
+            color: #f7931a;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        /* Action buttons - kiri dan kanan dalam header */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #111118;
+    border: 1px solid #444;
+    color: #ccc;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 18px;
+}
+
+.action-btn:hover {
+    background: #1e1e2e;
+    border-color: #f7931a;
+    color: #f7931a;
+    transform: scale(1.05);
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+        .updated-time {
+            font-size: 12px;
+            color: #666680;
+            margin-bottom: 20px;
+            padding-left: 54px;
+        }
+        .updated-time span {
+            color: #8888aa;
+        }
+        .btn-reload {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #2a2a40;
+            color: #c0c0d0;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-reload:hover {
+            background: linear-gradient(135deg, #222244, #1a2a50);
+            border-color: #f7931a55;
+            color: #f7931a;
+            transform: translateY(-1px);
+        }
+        .btn-reload:active {
+            transform: translateY(0);
+        }
+        .btn-reload.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .btn-reload svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.5s ease;
+        }
+        .btn-reload.loading svg {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+            padding-left: 54px;
+        }
+        .filter-tag {
+            background: #111118;
+            border: 1px solid #222233;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #7777aa;
+            transition: all 0.2s;
+        }
+        .filter-tag.active {
+            border-color: #f7931a44;
+            color: #f7a900;
+            background: #f7931a0d;
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .news-card {
+            background: #111118;
+            border: 1px solid #1e1e2e;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.4s ease forwards;
+            opacity: 0;
+        }
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f7931a, #e07c00, #f7931a);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .news-card:hover {
+            border-color: #2a2a44;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        .news-card:hover::before {
+            opacity: 1;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .coin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #1a1a2e;
+            border: 1px solid #2a2a40;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #f7a900;
+            width: fit-content;
+            letter-spacing: 0.5px;
+        }
+        .news-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e8e8f0;
+            line-height: 1.45;
+            transition: color 0.2s;
+        }
+        .news-card:hover .news-title {
+            color: #ffffff;
+        }
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #555568;
+            margin-top: auto;
+        }
+        .news-source {
+            color: #7777aa;
+            font-weight: 500;
+        }
+        .news-date {
+            color: #555568;
+        }
+        .news-link-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            color: #333344;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .news-card:hover .news-link-icon {
+            opacity: 1;
+            color: #f7a900;
+        }
+        .fallback-msg {
+            text-align: center;
+            padding: 40px 20px;
+            color: #ff6b6b;
+            background: #111118;
+            border: 1px solid #2a1a1a;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        .fallback-msg .sub {
+            color: #666680;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        .loading-skeleton {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .skeleton-card {
+            background: #111118;
+            border: 1px solid #1e1e2e;
+            border-radius: 12px;
+            padding: 20px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .skeleton-line {
+            height: 10px;
+            background: #1a1a28;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .skeleton-line:nth-child(1) { width: 30%; height: 8px; }
+        .skeleton-line:nth-child(2) { width: 90%; height: 14px; }
+        .skeleton-line:nth-child(3) { width: 75%; height: 14px; }
+        .skeleton-line:nth-child(4) { width: 50%; height: 8px; margin-top: 16px; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid #1e1e2e;
+            text-align: center;
+            font-size: 12px;
+            color: #666680;
+        }
+        .footer a {
+            color: #8888aa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer a:hover {
+            color: #f7931a;
+        }
+        .footer i {
+            margin: 0 4px;
+        }
+
+        .footer .telegram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #26A5E4;
+    padding: 6px 14px;
+    border-radius: 30px;
+    margin-top: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.footer .telegram-link i {
+    font-size: 14px;
+    color: white;
+}
+
+.footer .telegram-link:hover {
+    background: #1e8bc3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(38, 165, 228, 0.3);
+    color: white;
+}
+
+.footer .telegram-link:active {
+    transform: translateY(0);
+}
+        @media (max-width: 768px) {
+            .news-grid, .loading-skeleton {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .updated-time, .filter-tags {
+                padding-left: 0;
+            }
+            .title {
+                font-size: 18px;
+            }
+            body {
+                padding: 14px;
+                padding-top: 70px;
+            }
+            .ticker-item {
+                margin: 0 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .news-card {
+                padding: 16px;
+            }
+            .news-title {
+                font-size: 13px;
+            }
+        }
+
+
+/* Social media icons */
+.social-share {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 8px 0 12px 0;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    color: #aaa;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid #2a2a40;
+}
+
+.social-icon:hover {
+    transform: scale(1.08);
+    color: white;
+}
+
+.social-icon:nth-child(1):hover { background: #26A5E4; border-color: #26A5E4; } /* Telegram */
+.social-icon:nth-child(2):hover { background: #1DA1F2; border-color: #1DA1F2; } /* Twitter */
+.social-icon:nth-child(3):hover { background: #25D366; border-color: #25D366; } /* WhatsApp */
+.social-icon:nth-child(4):hover { background: #1877F2; border-color: #1877F2; } /* Facebook */
+
+    </style>
+</head>
+<body>
+
+<!-- Ticker Fixed -->
+<div class="ticker-container">
+    <div class="ticker-wrap">
+        <div class="ticker" id="ticker"></div>
+    </div>
+</div>
+
+<div class="container">
+<!-- action button-->
+        <!-- action button -->
+<div class="action-buttons">
+    <button class="action-btn" id="closeBtn" title="Tutup"><i class="fas fa-times"></i></button>
+    <button class="action-btn" id="shareBtn" title="Kongsi"><i class="fas fa-share-alt"></i></button>
+</div>
+    </div>
+
+<!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">₿</div>
+            <div class="title">Berita <span>Kripto</span></div>
+        </div></div>
+
+
+
+<!-- icon share media social -->
+<div class="social-share">
+    <a href="#" class="social-icon" id="shareTelegram" title="Kongsi ke Telegram"><i class="fab fa-telegram"></i></a>
+    <a href="#" class="social-icon" id="shareTwitter" title="Kongsi ke Twitter"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="social-icon" id="shareWhatsapp" title="Kongsi ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="#" class="social-icon" id="shareFacebook" title="Kongsi ke Facebook"><i class="fab fa-facebook-f"></i></a>
+</div>
+
+    <div class="updated-time" id="updatedTime"></div>
+    <div class="filter-tags">
+        <span class="filter-tag active">BTC</span>
+        <span class="filter-tag active">ETH</span>
+        <span class="filter-tag active">XRP</span>
+        <span class="filter-tag active">SOL</span>
+        <span class="filter-tag active">USDT</span>
+        <span class="filter-tag active">WLD</span>
+    </div>
+    <button class="btn-reload" id="btnReload" onclick="loadNews()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        Muat Semula
+    </button>
+    <div id="newsContainer"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+
+             <div class="header">
+        <div class="header-left">
+            <div class="logo">₿</div>
+            <div class="title">Berita <span>Kripto</span></div></div></div>
+        
+
+        <div>&trade; 2026 Berita Kripto Malaysia</div>    <div>&copy; Hak Cipta Terpelihara</div>
+        <div style="margin-top: 8px;">
+            <i class="fas fa-code"></i> Dibina oleh <a href="https://t.me/johansetia" target="_blank" class="telegram-link"><i class="fab fa-telegram"></i> @johansetia</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// ======================= TICKER REAL-TIME COINGECKO =======================
+const COINS_CONFIG = [
+    { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin' },
+    { id: 'ethereum', symbol: 'ETH', name: 'Ethereum' },
+    { id: 'ripple', symbol: 'XRP', name: 'Ripple' },
+    { id: 'solana', symbol: 'SOL', name: 'Solana' },
+    { id: 'tether', symbol: 'USDT', name: 'Tether' },
+    { id: 'worldcoin-wld', symbol: 'WLD', name: 'Worldcoin' }
+];
+
+let tickerPrices = {};
+let tickerChanges = {};
+
+async function fetchTickerPrices() {
+    try {
+        const ids = COINS_CONFIG.map(c => c.id).join(',');
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=myr&include_24hr_change=true`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        COINS_CONFIG.forEach(coin => {
+            if (data[coin.id]) {
+                tickerPrices[coin.symbol] = data[coin.id].myr;
+                tickerChanges[coin.symbol] = data[coin.id].myr_24h_change;
+            }
+        });
+        updateTicker();
+    } catch (error) {
+        console.error('Ticker fetch error:', error);
+    }
+}
+
+function updateTicker() {
+    const tickerEl = document.getElementById('ticker');
+    if (!tickerEl) return;
+    let html = '';
+    COINS_CONFIG.forEach(coin => {
+        const price = tickerPrices[coin.symbol];
+        const change = tickerChanges[coin.symbol];
+        if (price == null) return;
+        
+        const isPositive = change >= 0;
+        const changeText = (isPositive ? '+' : '') + (change?.toFixed(2) ?? '0.00') + '%';
+        const arrow = isPositive ? '▲' : '▼';
+        const formattedPrice = coin.symbol === 'BTC' || coin.symbol === 'ETH' ? 
+            price.toLocaleString('ms-MY', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) :
+            price.toFixed(2);
+        
+        let iconHtml = '';
+        if (coin.symbol === 'BTC') iconHtml = '<i class="fab fa-bitcoin" style="font-size:13px; margin-right:4px; color:#f7931a;"></i>';
+        else if (coin.symbol === 'ETH') iconHtml = '<i class="fab fa-ethereum" style="font-size:13px; margin-right:4px; color:#627eea;"></i>';
+        else if (coin.symbol === 'SOL') iconHtml = '<span style="font-size:14px; margin-right:4px; color:#9945FF; font-weight:bold;">Ⓢ</span>';
+        else if (coin.symbol === 'XRP') iconHtml = '<i class="fas fa-times" style="font-size:13px; margin-right:4px; color:#8a929c;"></i>';
+        else if (coin.symbol === 'USDT') iconHtml = '<span style="font-size:14px; margin-right:4px; color:#00ffb9; font-weight:bold;">₮</span>';
+        else if (coin.symbol === 'WLD') iconHtml = '<i class="fas fa-earth-americas" style="font-size:13px; margin-right:4px; color:silver;"></i>';
+        
+        html += `<span class="ticker-item">
+                    ${iconHtml}<span class="ticker-symbol">${coin.symbol}</span>
+                    <span class="ticker-price"> RM ${formattedPrice}</span>
+                    <span class="ticker-change ${isPositive ? 'positive' : 'negative'}"> ${arrow} ${changeText}</span>
+                </span>`;
+    });
+    // Duplicate untuk loop tanpa henti
+    tickerEl.innerHTML = html + html;
+}
+
+// Initial fetch dan auto refresh setiap 30 saat
+fetchTickerPrices();
+setInterval(fetchTickerPrices, 30000);
+
+    
+
+// Butang X (close) - back to menu
+document.getElementById('closeBtn').addEventListener('click', () => {
+    window.location.href = 'index.html?menu=open';
+});
+
+// Butang Share (kongsi) - kekal macam biasa
+document.getElementById('shareBtn').addEventListener('click', () => {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Berita Kripto Malaysia',
+            text: 'Berita terkini Bitcoin, Ethereum, Solana dan lain-lain',
+            url: window.location.href
+        });
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert('🔗 Pautan disalin ke papan keratan!');
+    }
+});
+
+
+    // ======================= BERITA (RSS) =======================
+    const RSS_URL = 'https://news.google.com/rss/search?q=bitcoin+OR+ethereum+OR+ripple+OR+solana+OR+tether+OR+worldcoin&hl=ms&ceid=MY:ms&gl=MY';
+    const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+    const MAX_NEWS = 8;
+
+    const COIN_KEYWORDS = [
+        'Bitcoin', 'BTC', 'Ethereum', 'ETH', 'Ripple', 'XRP',
+        'Solana', 'SOL', 'Tether', 'USDT', 'Worldcoin', 'WLD'
+    ];
+
+    const COIN_MAP = {
+        'Bitcoin': 'BTC', 'BTC': 'BTC',
+        'Ethereum': 'ETH', 'ETH': 'ETH',
+        'Ripple': 'XRP', 'XRP': 'XRP',
+        'Solana': 'SOL', 'SOL': 'SOL',
+        'Tether': 'USDT', 'USDT': 'USDT',
+        'Worldcoin': 'WLD', 'WLD': 'WLD'
+    };
+
+    const FALLBACK_NEWS = [
+        { title: 'Bitcoin mencecah paras tertinggi baharu pada tahun 2026, pelabur optimis', source: 'Malaysiakini', date: '2 jam lepas', link: '#', coin: 'BTC' },
+        { title: 'Ethereum dinaik taraf ke versi terkini, yuran transaksi turun mendadak', source: 'The Star', date: '5 jam lepas', link: '#', coin: 'ETH' },
+        { title: 'Ripple XRP mendapat kelulusan SEC untuk ETF spot di Amerika Syarikat', source: 'Bernama', date: 'semalam', link: '#', coin: 'XRP' },
+        { title: 'Solana SOL mencatatkan lonjakan 15% selepas pengumuman rakan niaga baharu', source: 'Free Malaysia Today', date: 'semalam', link: '#', coin: 'SOL' },
+        { title: 'Tether USDT kekal stabil, nilai pasaran mencecah rekod tertinggi', source: 'Utusan Malaysia', date: '3 hari lepas', link: '#', coin: 'USDT' },
+        { title: 'Worldcoin WLD berkembang pesat di Asia Tenggara dengan 5 juta pengguna', source: 'CoinDesk', date: 'semalam', link: '#', coin: 'WLD' }
+    ];
+
+    function getMalaysiaTime() {
+        const now = new Date();
+        const options = {
+            timeZone: 'Asia/Kuala_Lumpur',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+        const formatter = new Intl.DateTimeFormat('ms-MY', options);
+        return `Kemaskini: ${formatter.format(now)}`;
+    }
+
+    function getRelativeDateMs(pubDate) {
+        const now = new Date();
+        const malayNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kuala_Lumpur' }));
+        const pub = new Date(pubDate);
+        const diffMs = malayNow - pub;
+        if (isNaN(diffMs) || diffMs < 0) return 'baru sahaja';
+        const diffMin = Math.floor(diffMs / 60000);
+        if (diffMin < 1) return 'baru sahaja';
+        if (diffMin < 60) return `${diffMin} minit lepas`;
+        const diffHr = Math.floor(diffMin / 60);
+        if (diffHr < 24) return `${diffHr} jam lepas`;
+        const diffDay = Math.floor(diffHr / 24);
+        if (diffDay === 1) return 'semalam';
+        if (diffDay < 7) return `${diffDay} hari lepas`;
+        if (diffDay < 30) return `${Math.floor(diffDay / 7)} minggu lepas`;
+        return `${Math.floor(diffDay / 30)} bulan lepas`;
+    }
+
+    function detectCoin(text) {
+        const upper = text.toUpperCase();
+        for (const kw of COIN_KEYWORDS) {
+            if (upper.includes(kw.toUpperCase())) {
+                return COIN_MAP[kw];
+            }
+        }
+        return null;
+    }
+
+    function isValidNews(text) {
+        if (!text) return false;
+        const upper = text.toUpperCase();
+        for (const kw of COIN_KEYWORDS) {
+            if (upper.includes(kw.toUpperCase())) return true;
+        }
+        return false;
+    }
+
+    function decodeHtmlEntity(str) {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = str;
+        return txt.value;
+    }
+
+    function parseRSS(xmlText) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+        const items = xmlDoc.querySelectorAll('item');
+        const newsList = [];
+        items.forEach(item => {
+            const title = item.querySelector('title') ? decodeHtmlEntity(item.querySelector('title').textContent) : '';
+            const source = item.querySelector('source') ? item.querySelector('source').textContent : 'Tidak diketahui';
+            const link = item.querySelector('link') ? item.querySelector('link').textContent : '#';
+            const pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent : '';
+            const description = item.querySelector('description') ? decodeHtmlEntity(item.querySelector('description').textContent) : '';
+            const fullText = title + ' ' + description;
+            if (!isValidNews(fullText)) return;
+            const coin = detectCoin(fullText);
+            const relativeDate = pubDate ? getRelativeDateMs(pubDate) : 'baru sahaja';
+            newsList.push({ title, source, link, date: relativeDate, coin: coin || 'CRYPTO' });
+        });
+        return newsList;
+    }
+
+    function showSkeleton() {
+        const container = document.getElementById('newsContainer');
+        let html = '<div class="loading-skeleton">';
+        for (let i = 0; i < 4; i++) {
+            html += `<div class="skeleton-card">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                    </div>`;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    function renderNews(newsArray) {
+        const container = document.getElementById('newsContainer');
+        if (newsArray.length === 0) {
+            container.innerHTML = `<div class="fallback-msg">Tiada berita berkaitan krypto ditemui.<div class="sub">Sila cuba muat semula.</div></div>`;
+            return;
+        }
+        const limited = newsArray.slice(0, MAX_NEWS);
+        let html = '<div class="news-grid">';
+        limited.forEach((news, idx) => {
+            html += `<a class="news-card" href="${news.link}" target="_blank" rel="noopener noreferrer" style="animation-delay: ${idx * 0.07}s">
+                        <span class="news-link-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                        <span class="coin-badge">${news.coin}</span>
+                        <div class="news-title">${news.title}</div>
+                        <div class="news-meta"><span class="news-source">${news.source}</span><span class="news-date">• ${news.date}</span></div>
+                    </a>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    function renderFallback() {
+        const container = document.getElementById('newsContainer');
+        let html = `<div class="fallback-msg" style="margin-bottom:16px;">⚠️ Gagal memuat berita. Cuba lagi.<div class="sub">Menunjukkan data contoh sementara.</div></div><div class="news-grid">`;
+        FALLBACK_NEWS.forEach((news, idx) => {
+            html += `<a class="news-card" href="${news.link}" target="_blank" style="animation-delay: ${idx * 0.07}s">
+                        <span class="news-link-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                        <span class="coin-badge">${news.coin}</span>
+                        <div class="news-title">${news.title}</div>
+                        <div class="news-meta"><span class="news-source">${news.source}</span><span class="news-date">• ${news.date}</span></div>
+                    </a>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    async function fetchNews() {
+        const fullUrl = PROXY_URL + encodeURIComponent(RSS_URL);
+        const response = await fetch(fullUrl, { signal: AbortSignal.timeout(12000) });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        if (!text || text.length < 100) throw new Error('Empty response');
+        return text;
+    }
+
+    async function loadNews() {
+        const btn = document.getElementById('btnReload');
+        btn.classList.add('loading');
+        document.getElementById('updatedTime').innerHTML = `<span>${getMalaysiaTime()}</span>`;
+        showSkeleton();
+        try {
+            const xmlText = await fetchNews();
+            const newsList = parseRSS(xmlText);
+            renderNews(newsList);
+        } catch (err) {
+            console.error(err);
+            renderFallback();
+        } finally {
+            btn.classList.remove('loading');
+        }
+    }
+
+    // Initialize
+    loadNews();
+    
+    
+// ======================= SHARE KE MEDIA SOSIAL =======================
+function getShareUrl() {
+    return encodeURIComponent(window.location.href);
+}
+
+function getShareTitle() {
+    return encodeURIComponent('Berita Kripto Malaysia - Berita terkini Bitcoin, Ethereum, Solana dan lain-lain dalam bahasa Malaysia');
+}
+
+// Telegram
+document.getElementById('shareTelegram').addEventListener('click', function(e) {
+    e.preventDefault();
+    const url = `https://t.me/share/url?url=${getShareUrl()}&text=${getShareTitle()}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+// Twitter
+document.getElementById('shareTwitter').addEventListener('click', function(e) {
+    e.preventDefault();
+    const url = `https://twitter.com/intent/tweet?text=${getShareTitle()}&url=${getShareUrl()}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+// WhatsApp
+document.getElementById('shareWhatsapp').addEventListener('click', function(e) {
+    e.preventDefault();
+    const url = `https://wa.me/?text=${getShareTitle()} ${getShareUrl()}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+// Facebook
+document.getElementById('shareFacebook').addEventListener('click', function(e) {
+    e.preventDefault();
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${getShareUrl()}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+    
+</script>
+</body>
+</html>
