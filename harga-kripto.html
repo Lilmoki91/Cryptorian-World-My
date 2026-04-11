@@ -1128,6 +1128,74 @@
             .input-quick-amounts { gap: 4px; }
             .quick-amount-btn { padding: 3px 8px; font-size: 10px; }
         }
+    
+
+/* Social media icons */
+.social-share {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 8px 0 22px 0;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+    text-decoration: none;
+}
+
+/* Warna background ikut platform (statik, bukan hover) */
+.social-icon:nth-child(1) { background: #26A5E4; } /* Telegram */
+.social-icon:nth-child(2) { background: #1DA1F2; } /* Twitter */
+.social-icon:nth-child(3) { background: #25D366; } /* WhatsApp */
+.social-icon:nth-child(4) { background: #1877F2; } /* Facebook */
+
+/* Hover hanya ubah saiz, warna kekal */
+.social-icon:hover {
+    transform: scale(1.1);
+}
+
+
+/*telegram dev link url*/
+  .telegram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #26A5E4;
+    padding: 6px 6px;
+    border-radius: 30px;
+    margin-top: 8px;
+    text-decoration: none !important;
+    color: white !important;
+    font-weight: 500;
+    font-size: 12px !important;
+    transition: all 0.2s ease !important;
+    border: none;
+}
+
+ .telegram-link i {
+    font-size: 14px !important;
+    color: white !important;
+}
+
+ .telegram-link:hover {
+    background: #1e8bc3;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(38, 165, 228, 0.3) !important;
+    color: white;
+}
+
+ .telegram-link:active {
+    transform: translateY(0) !important;
+}
+      
     </style>
 </head>
 <body>
